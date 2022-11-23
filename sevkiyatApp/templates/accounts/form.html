@@ -1,0 +1,55 @@
+{% load crispy_forms_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Güven Anadolu Bilgi Yönetim Sistemi</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+</head>
+<body>
+	
+	<div class="limiter" style="margin-top: 500px; margin-left: 500px;">
+		<div class="container-login100" >
+			<div class="wrap-login100">
+        
+        <form class="login100-form validate-form" method="POST" enctype="multipart/form-data">
+        
+            {% csrf_token %}
+				
+					<span class="login100-form-title p-b-34 p-t-27">
+						GÜVEN ANADOLU SEVKİYAT YÖNETİM SİSTEMİ
+					</span>
+
+					<div class="wrap-input100 validate-input" data-validate = "Enter username">
+						<input class="input100" type="text" name="username" placeholder="Kullanıcı Adı Giriniz">
+						<span class="focus-input100" data-placeholder="&#xf207;"></span>
+					</div>
+
+					<div class="wrap-input100 validate-input" data-validate="Enter password">
+						<input class="input100" type="password" name="password" placeholder="Şifre Giriniz">
+						<span class="focus-input100" data-placeholder="&#xf191;"></span>
+					</div>
+
+
+					<div class="container-login100-form-btn">
+						<button class="login100-form-btn">
+							Giriş
+						</button>
+					</div>
+
+					<div class="text-center p-t-90">
+						<a  class="txt1" href="#">
+							"Daha yeşil bir dünya için"
+						</a>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	
+
+	<div id="dropDownSelect1"></div>
+
+</body>
+</html>

@@ -1,0 +1,550 @@
+{% load humanize %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap4.min.js">
+    <script src="https://use.fontawesome.com/ccaeef807f.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  
+  </head>
+<body>
+  
+  
+  <div  style="margin-left: 60px; margin-right:60px;">
+        <div class="alert alert-primary d-flex justify-content-center" role="alert">
+        <h3 style="margin-left: auto; margin-right: auto;">LOGO SEVKİYAT MODÜLÜ</h3>
+        </div>
+
+
+      <nav class="navbar navbar-expand-lg navbar-primary bg-light" style="border-radius: 5px;">
+        <a class="navbar-brand d-print-none" href="/"><button class="btn btn-success"><h6>Anasayfa</h6></button></a>
+        <a class="navbar-brand d-print-none" href="/yolHaritasiListesi" ><button class="btn btn-primary"><h6>Y/H Listesi</h6></button></a>
+        <a class="navbar-brand d-print-none">
+        <form method="POST" action="/yolHaritasiAdiDegistir/" role="form" accept-charset="utf-8"> 
+          {% csrf_token %}
+        <div class="input-group">
+        <input type="hidden" name="eskiAd" value="{{sepetAdi}}">
+        <input type="text" class="form-control" name="yeniAd"  placeholder="Yeni isim giriniz">
+        <div class="input-group-append"> <button type="submit" class="btn btn-primary">Gönder</button></div>
+      
+      
+     </div>
+    </form>  </a>
+       
+         
+          
+          <h5   style="margin-left: auto; margin-right: auto;">{{sepetAdi}}</h5>
+           
+       
+     
+      </nav>
+      <table class="table table-striped table-bordered table-hover mydatatable" > 
+        <thead>
+        <tr>
+          <th id="id1">İşlem <i id="id1icon" class="fa fa-print d-print-none" aria-hidden="true" ></i></th>
+          <th id="id2">Sipariş Durumu <i id="id2icon" class="fa fa-print d-print-none" aria-hidden="true" ></i></th>
+             <!--<th id="id3">Fiş No <i id="id3icon" class="fa fa-print d-print-none" aria-hidden="true" ></i></th> -->
+          <th id="id4">Cari Kodu <i id="id4icon" class="fa fa-print d-print-none" aria-hidden="true" ></i></th>
+          <th id="id5">Cari Adı <i id="id5icon" class="fa fa-print d-print-none" aria-hidden="true" ></i></th>      
+          <th id="id6">Fabrika <i id="id6icon" class="fa fa-print d-print-none" aria-hidden="true" ></i></th>
+          <th id="id7">Sipariş Tarihi <i id="id7icon" class="fa fa-print d-print-none" aria-hidden="true" ></i></th>
+          <th id="id8">Sipariş Notu <i id="id8icon" class="fa fa-print d-print-none" aria-hidden="true" ></i></th>  
+          <th id="id88">Döküman İzleme No <i id="id88icon" class="fa fa-print d-print-none" aria-hidden="true" ></i></th>  
+           
+          <th id="id9">Sipariş Cinsi <i id="id9icon" class="fa fa-print d-print-none" aria-hidden="true" ></i></th>                   
+          <th id="id10">Sipariş Miktarı <i id="id10icon" class="fa fa-print d-print-none" aria-hidden="true" ></i></th>
+          <th id="id16">Verilen Miktar <i id="id16icon" class="fa fa-print d-print-none" aria-hidden="true" ></i></th>
+          <th id="id11">Saha Müdürü <i id="id11icon" class="fa fa-print d-print-none" aria-hidden="true" ></i></th>
+          <th id="id12">Şehir <i id="id12icon" class="fa fa-print d-print-none" aria-hidden="true" ></i></th>
+          <th id="id13">İlçe <i id="id13icon" class="fa fa-print d-print-none" aria-hidden="true" ></i></th>
+          <th id="id14" class="d-print" >Adres </th>
+          <th id="id18" class="d-print" >İlgili <i id="id18icon" class="fa fa-print d-print-none" aria-hidden="true" ></i></th>
+          <th id="id19" class="d-print" >Telefon<i id="id19icon" class="fa fa-print d-print-none" aria-hidden="true" ></i></th>
+          
+          <th id="id15" class="d-print-none" >Sevkiyat Miktarı</th>
+          
+          <th id="id17">İşlem <i id="id17icon" class="fa fa-print d-print-none" aria-hidden="true" ></i></th>
+        </tr>
+      </thead>
+      <tbody >
+        
+          {% for siparis in sipariss %}
+          <tr data-index="{{siparis.id}}" data-position="{{siparis.positions}}">
+            
+            <td id="id1"><a href="/tamamla/{{siparis.id}}" class="btn btn-primary">Tamamla</a></td>
+       
+            {% if siparis.sevkiyatDurumu == 'Sevkiyatta' %}
+                        <td id="id2" style="background-color: khaki;">{{siparis.sevkiyatDurumu}}<br></td>
+                    {% elif siparis.sevkiyatDurumu == 'Siparişte' %}
+                        <td id="id2" style="background-color: lightcoral;">{{siparis.sevkiyatDurumu}}</td>
+                    {% elif siparis.sevkiyatDurumu == 'Öneride' %}
+                    <td id="id2" style="background-color: rgb(92, 185, 106);">{{siparis.sevkiyatDurumu}}</td>
+                    {% elif siparis.sevkiyatDurumu == 'Silinmiş kayıt' %}
+                    <td id="id2" style="background-color: rgb(161, 161, 161);">{{siparis.sevkiyatDurumu}}</td>
+                    {% elif siparis.sevkiyatDurumu == 'Tamamlandı' %}
+                    <td id="id2" style="background-color: rgb(137, 154, 238);">{{siparis.sevkiyatDurumu}}<br>{{siparis.makbuzNo}}<br>{{siparis.makbuzTarihi}}</td>
+                    {% else %}
+                    <td id="id2">{{siparis.sevkiyatDurumu|default_if_none:""}}</td>    
+                    
+                    {% endif %} 
+            
+               <!--<td id="id3" >{{siparis.siparisFisNo}} </td> -->
+            <td id="id4">{{siparis.cariKodu}}</td>
+            <td id="id5">{{siparis.cariAdi}}</td>
+            <td id="id6">{{siparis.fabrikaKodu}}</td>
+            <td id="id7">{{siparis.siparisDateTime}}</td>
+            <td id="id8">{{siparis.siparisNotu}}</td>
+            <td id="id88">{{siparis.dokumanİzlemeNo}}</td>
+            <td id="id9">{{siparis.siparisCinsi}}</td>
+            <td id="id10">{{siparis.siparisMiktari}}</td>
+            <td id="id16">{{siparis.verilenMiktar|default_if_none:"0"}}</td>
+            <td id="id11">{{siparis.siparisEden|default_if_none:""}}</td>
+            <td id="id12">{{siparis.sevkiyatCity|default_if_none:""}}</td>
+            <td id="id13">{{siparis.sevkiyatTown|default_if_none:""}}</td>
+            <td id="sa{{siparis.id}}">
+              
+                {{siparis.sevkiyatAdresi}}
+              
+            
+              <div id=sa{{siparis.id}}> <input class="d-print-none" type="text" v-on:keypress="keyp($event)" > </div>
+            <script>
+              new Vue({
+                el:"#sa{{siparis.id}}",
+                data:{  id:'{{siparis.id}}' },
+                methods:{
+                  keyp(e){
+                    if(e.keyCode == 13){
+                      console.log("ENTER a basıldı...",this.id);
+                      adresGonder(this.id,e.target.value);                 
+                      document.getElementById("sa"+this.id).innerHTML = e.target.value;
+                      e.target.value=null;
+                      }                  
+                  }
+                }
+              });
+            </script>
+            </td>
+            <td id="id18">{{siparis.ilgili}}</td>
+            <td id="id19">{{siparis.tel1}}</td>
+            <td  id="sm{{siparis.id}}">{{siparis.sevkiyatMiktari|default_if_none:"0"}}
+            <div id=sm{{siparis.id}} > 
+              <input class="d-print-none " type="text" v-on:keypress="keyp($event)"  > 
+            </div>
+              <script>
+              new Vue({
+                el:"#sm{{siparis.id}}",
+                data:{  id:'{{siparis.id}}' },
+                methods:{
+                  
+                  keyp(e){
+                    if(e.keyCode == 13){
+                      console.log("ENTER a basıldı...",this.id);
+                      miktarGonder(this.id,e.target.value);                 
+                      document.getElementById("sm"+this.id).innerHTML = e.target.value;
+                      e.target.value=null;
+                      }                  
+                  }
+                }
+              });
+            </script>
+            </td>
+            
+            {% if siparis.sevkiyatDurumu == 'Sevkiyatta' %}
+            <td id="id17"><a href="/sevkiyattanCikar/{{siparis.id}}" class="btn btn-danger">Çıkar</a></td>
+            {% endif %}
+        </tr>
+          {% endfor%}
+          <td id="id1"></td>
+          <td id="id2"></td>
+        
+ 
+          
+          <td id="id4"></td>
+          <td id="id5"></td>
+          <td id="id6"></td>
+          <td id="id7"></td>
+          
+          <td id="id8"></td>
+          <td id="id88"></td>
+          <td id="id9"></td>
+          <td id="id10"><strong>{{ totalSiparisMiktari.siparisMiktari__sum|intcomma|default_if_none:"0"}}</strong>  </td>
+          <td id="id15"><strong>{{ totalVerilenMiktar.verilenMiktar__sum|default_if_none:"0"}}</strong></td>
+          <td id="id11" ></td>
+          <td id="id12"></td>
+          <td id="id13"></td>
+          
+          
+          <td id="id16"></td>
+          <td id="id17"></td>
+          <td id="id18"></td>
+          <td id="id14"><strong>{{ totalSevkiyatMiktari.sevkiyatMiktari__sum|default_if_none:"0"}}</strong></td>
+          <td id="id19"></td>
+
+        
+
+
+  
+ 
+    
+
+
+
+
+  <table id="idAltBilgi" class="table table-bordered table-striped " style="width: 30%;">
+    <thead>
+      <tr>
+        <span id="yazdir" class="d-print-none">Yazdır<i id="idAltBilgiicon" class="fa fa-print d-print-none" aria-hidden="true" ></i></span>
+      </tr>
+    </thead>
+    <tbody>
+     
+     
+
+      <tr>
+        <th  scope="row">Sürücü</th>
+         
+        <td>{{surucu|default_if_none:""}}</td>
+          
+      </tr>
+      <tr>
+        <th scope="row">Yüklenen Miktar</th>
+        <td>{{yuklenen|default_if_none:""}}</td>
+      </tr>
+      <tr>
+        <th scope="row">Dağıtılan Miktar</th>
+        <td>{{dagitilan|default_if_none:""}}</td>
+      </tr>
+      <tr>
+        <th scope="row">Fazla/Eksik</th>
+        <td>{{fark|default_if_none:""}}</td>
+      </tr>
+    
+      <tr>
+        <th scope="row">Çıkış Km</th>
+        <td colspan="2">{{cikisKm|default_if_none:""}}</td>
+            
+      </tr>
+      <tr>
+        <th scope="row">Dönüş Km</th>
+        <td colspan="2">{{donusKm|default_if_none:""}}</td>
+        
+      </tr>
+      <tr>
+        <th scope="row">Yapılan Yol</th>
+        <td colspan="2">{{yapilanKm|default_if_none:""}}</td>
+        
+      </tr>
+      <tr>
+        <th scope="row">Mazot Yüzdesi</th>
+        <td colspan="2">{{mazotYuzdesi|default_if_none:""}}</td>
+        
+      </tr>
+      <tr>
+        <th scope="row">Alınan Yakıt</th>
+        <td colspan="2">{{alinanYakit|default_if_none:""}}</td>
+        
+      </tr>
+      <tr>
+        <th scope="row">Alınan Adblue</th>
+        <td colspan="2">{{alinanAdblue|default_if_none:""}}</td>
+        
+      </tr>
+      <tr>
+        <th scope="row">Yakıt Tutarı</th>
+        <td colspan="2">{{yakitTutari|default_if_none:""}}</td>
+        
+      </tr>
+      <tr>
+        <th scope="row">Gidiş Tarihi</th>
+        <td colspan="2">{{gidisTarihi|default_if_none:""}}</td>
+        
+      </tr>
+      <tr>
+        <th scope="row">Dönüş Tarihi</th>
+        <td colspan="2">{{donusTarihi|default_if_none:""}}  </td>
+        
+      </tr>
+    </div>
+   
+    </tbody>
+  </table>
+  
+
+<script type="text/javascript">
+
+
+$(document).ready(function(){
+    $("#yazdir").click(function(){
+      console.log("çalışıyor");
+      $("#idAltBilgiicon").toggleClass("fa fa-print");
+      $("[id='idAltBilgi']").toggleClass("d-print-none");
+    });
+  });
+
+
+
+  $(document).ready(function(){
+    $("#id1").click(function(){
+      console.log("çalışıyor");
+      $("#id1icon").toggleClass("fa fa-print");
+      $("[id='id1']").toggleClass("d-print-none");
+    });
+  });
+    
+  $(document).ready(function(){
+    $("#id2").click(function(){
+      console.log("çalışıyor");
+      $("#id2icon").toggleClass("fa fa-print");
+      $("[id='id2']").toggleClass("d-print-none");
+    });
+  });
+
+  $(document).ready(function(){
+    $("#id3").click(function(){
+      console.log("çalışıyor");
+      $("#id3icon").toggleClass("fa fa-print");
+      $("[id='id3']").toggleClass("d-print-none");
+    });
+  });
+
+  $(document).ready(function(){
+    $("#id4").click(function(){
+      console.log("çalışıyor");
+      $("#id4icon").toggleClass("fa fa-print");
+      $("[id='id4']").toggleClass("d-print-none");
+    });
+  });
+  $(document).ready(function(){
+    $("#id5").click(function(){
+      console.log("çalışıyor");
+      $("#id5icon").toggleClass("fa fa-print");
+      $("[id='id5']").toggleClass("d-print-none");
+    });
+  });
+  $(document).ready(function(){
+    $("#id6").click(function(){
+      console.log("çalışıyor");
+      $("#id6icon").toggleClass("fa fa-print");
+      $("[id='id6']").toggleClass("d-print-none");
+    });
+  });
+  $(document).ready(function(){
+    $("#id7").click(function(){
+      console.log("çalışıyor");
+      $("#id7icon").toggleClass("fa fa-print");
+      $("[id='id7']").toggleClass("d-print-none");
+    });
+  });
+  $(document).ready(function(){
+    $("#id8").click(function(){
+      console.log("çalışıyor");
+      $("#id8icon").toggleClass("fa fa-print");
+      $("[id='id8']").toggleClass("d-print-none");
+    });
+  });
+  $(document).ready(function(){
+    $("#id88").click(function(){
+      console.log("çalışıyor");
+      $("#id88icon").toggleClass("fa fa-print");
+      $("[id='id88']").toggleClass("d-print-none");
+    });
+  });
+
+  $(document).ready(function(){
+    $("#id9").click(function(){
+      console.log("çalışıyor");
+      $("#id9icon").toggleClass("fa fa-print");
+      $("[id='id9']").toggleClass("d-print-none");
+    });
+  });
+  $(document).ready(function(){
+    $("#id10").click(function(){
+      console.log("çalışıyor");
+      $("#id10icon").toggleClass("fa fa-print");
+      $("[id='id10']").toggleClass("d-print-none");
+    });
+  });
+  $(document).ready(function(){
+    $("#id11").click(function(){
+      console.log("çalışıyor");
+      $("#id11icon").toggleClass("fa fa-print");
+      $("[id='id11']").toggleClass("d-print-none");
+    });
+  });
+  $(document).ready(function(){
+    $("#id12").click(function(){
+      console.log("çalışıyor");
+      $("#id12icon").toggleClass("fa fa-print");
+      $("[id='id12']").toggleClass("d-print-none");
+    });
+  });
+  $(document).ready(function(){
+    $("#id13").click(function(){
+      console.log("çalışıyor");
+      $("#id13icon").toggleClass("fa fa-print");
+      $("[id='id13']").toggleClass("d-print-none");
+    });
+  });
+  
+  $(document).ready(function(){
+    $("#id16").click(function(){
+      console.log("çalışıyor");
+      $("#id16icon").toggleClass("fa fa-print");
+      $("[id='id16']").toggleClass("d-print-none");
+    });
+  });
+  $(document).ready(function(){
+    $("#id17").click(function(){
+      console.log("çalışıyor");
+      $("#id17icon").toggleClass("fa fa-print");
+      $("[id='id17']").toggleClass("d-print-none");
+    });
+  });
+  $(document).ready(function(){
+    $("#id18").click(function(){
+      console.log("çalışıyor");
+      $("#id18icon").toggleClass("fa fa-print");
+      $("[id='id18']").toggleClass("d-print-none");
+    });
+  });
+  $(document).ready(function(){
+    $("#id19").click(function(){
+      console.log("çalışıyor");
+      $("#id19icon").toggleClass("fa fa-print");
+      $("[id='id19']").toggleClass("d-print-none");
+    });
+  });
+
+
+  $(document).ready(function() {
+      // Initialise the table
+      $("tbody").sortable({
+        
+        update:function(event,ui){
+          console.log("update çalıştı");
+          
+          $(this).children().each(function(index){
+            console.log($(this).attr('data-position'));
+            console.log($(this).position());
+            console.log(index+1);
+            console.log("---------------");
+            
+              if ($(this).attr('data-position') != (index+1)){
+                 $(this).addClass("updated");
+              }
+          }); 
+          
+          saveNewPositions();
+        }
+      });
+
+  });
+
+
+function miktarGonder(id,value){
+  console.log("miktarGonder in nin içinde");
+  console.log(id,value)
+
+  $.ajax('/ajax/miktarGonder', {
+                type: 'POST',  // http method
+                datatype:'json',
+                data: { 
+                  id:id,
+                  value:value,
+                  csrfmiddlewaretoken:'{{csrf_token}}', 
+                },  // data to submit
+                success: function (data, status, xhr) {
+                    $('p').append('status: ' + status + ', data: ' + data);
+                },
+                error: function (jqXhr, textStatus, errorMessage) {
+                        $('p').append('Error' + errorMessage);
+                }
+            });
+}
+
+
+function adresGonder(id,value){
+  console.log("adresGonder in nin içinde");
+  console.log(id,value)
+
+  $.ajax('/ajax/adresGonder', {
+                type: 'POST',  // http method
+                datatype:'json',
+                data: { 
+                  id:id,
+                  value:value,
+                  csrfmiddlewaretoken:'{{csrf_token}}', 
+                },  // data to submit
+                success: function (data, status, xhr) {
+                    $('p').append('status: ' + status + ', data: ' + data);
+                },
+                error: function (jqXhr, textStatus, errorMessage) {
+                        $('p').append('Error' + errorMessage);
+                }
+            });
+
+}
+
+
+
+
+
+
+
+
+  function saveNewPositions(){
+      console.log("saveNewPositions içinde");
+      var positions=[];
+
+      $('.updated').each(function(){
+          positions.push([$(this).attr('data-index'),$(this).attr('data-position'),($(this).index()+1)]);
+          $(this).removeClass('updated');
+          console.log($(this).attr('data-index'));
+      });
+          console.log(positions);
+          console.log("llllllllllllllllllllll");
+
+     $.ajax('/ajax/addposition', {
+                type: 'POST',  // http method
+                datatype:'json',
+                data: { 
+                  updated: 889,
+                  positions: JSON.stringify({positions: positions}),
+                  csrfmiddlewaretoken:'{{csrf_token}}', 
+                },  // data to submit
+                success: function (data, status, xhr) {
+                    $('p').append('status: ' + status + ', data: ' + data);
+                },
+                error: function (jqXhr, textStatus, errorMessage) {
+                        $('p').append('Error' + errorMessage);
+                }
+            });
+      
+      console.log("fffffffffffffffffffffffffff");
+  }
+</script>
+
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script><script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+
+<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap4.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/TableDnD/1.0.5/jquery.tablednd.min.js" integrity="sha512-uzT009qnQ625C6M8eTX9pvhFJDn/YTYChW+YTOs9bZrcLN70Nhj82/by6yS9HG5TvjVnZ8yx/GTD+qUKyQ9wwQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+</body>
+
+
+</html>

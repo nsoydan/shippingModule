@@ -1,0 +1,289 @@
+
+{% load crispy_forms_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <title>LOGO SEVKİYAT MODÜLÜ </title>
+</head>
+<body>  
+
+<div class="row">
+    <div class="col" style="margin-left:15px;"></div>
+      
+      
+    </div>
+
+
+  
+    <div class="col-11" style="margin-top: 30px;">
+    <div style="padding-right: 10px;">
+                <div class="alert alert-primary" role="alert">
+                    <div class="row">
+                      <div class="col">  </div>
+                      
+                        <div class="col-6"> <h3 >LOGO SEVKİYAT MODÜLÜ</h3></div>  
+                      
+                        <div class="col-2" > <h6 style="padding-left:50px;padding-top:50px;">Kullanıcı:{{request.user.first_name}} <a class="nav-link" href="accounts/logout"><button type="button" class="btn btn-danger"  >Çıkış  </button> </a></h6>  </div>
+                      </div>
+                  </div>
+              
+              <nav class="navbar navbar-expand-lg navbar-primary bg-light" style="border-radius: 5px;">
+                
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                  <ul class="navbar-nav">
+                    <li class="nav-item active">
+                      <a class="nav-link" href="/"><button class="btn btn-primary">ANASAYFA</button> </a>
+                    </li>
+                    <li class="nav-item active">
+                      <a class="nav-link" href="guncelle"><button class="btn btn-success">VERİ AL</button> </a>
+                    </li>
+                    <li class="nav-item active">
+                      <a class="nav-link"><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#YHEModal">
+                        Yol Haritası Ekle
+                      </button></a>
+                      </li>
+                      <li class="nav-item active">
+                        <a class="nav-link" href="yolHaritasiListesi"><button type="button" class="btn btn-primary"  >
+                          Yol Haritası Listesi
+                        </button></a>
+                        </li>
+                     
+      <!---------------------------------- Modal ---------------------->
+                      <div class="modal fade" id="YHEModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel">Yeni Yol Haritası</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+
+
+                            <form method="POST" action="yolHaritasiKaydet" role="form" accept-charset="utf-8" >
+                                {%csrf_token%}
+                                  <div class="row g-3 align-items-center">
+                                    <div class="col-auto">
+                                      <label for="yolHaritasiAdi" class="col-form-label">Yol Haritası Adı</label>
+                                    </div>
+                                    <div class="col-auto">
+                                      <input  id="yolHaritasiAdi" name="yolHaritasiAdi" class="form-control" aria-describedby="passwordHelpInline" style="border-radius: 15px;">
+                                    </div>
+                                    <div class="col-auto">
+                                      <span id="passwordHelpInline" class="form-text">
+                                        İki boşluk veya sonuna boşluk koymayınız.
+                                      </span>
+                                    </div>
+                                  </div>
+                          
+                              <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary" onclick="this.disabled=true; this.form.submit();">Kaydet</button>
+
+                              </div>
+                          </form>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </nav>
+
+              
+
+
+
+              <nav class="navbar navbar-light"  style=" background-color: #e3f2fd; margin-top: 20px; border-radius: 5px;">
+                 
+                <form action="" method="GET" class="form-check-inline">
+                    <div class="form-check form-check-inline">
+                      {{myFilter.form.siparisFisNo|as_crispy_field}}
+                    </div>
+                    <div class="form-check form-check-inline">
+                      {{myFilter.form.cariAdi|as_crispy_field}}
+                    </div>
+                    <div class="form-check form-check-inline ">
+                      {{myFilter.form.siparisCinsi|as_crispy_field}}
+                    </div>
+                    <div class="form-check form-check-inline">
+                      {{myFilter.form.siparisEden|as_crispy_field}}
+                    </div>
+                    <div class="form-check form-check-inline">
+                      {{myFilter.form.sevkiyatAdresi|as_crispy_field}}
+                    </div>
+                    <div class="form-check form-check-inline">
+                      {{myFilter.form.sevkiyatCity|as_crispy_field}}
+                    </div>
+                    <div class="form-check form-check-inline">
+                      {{myFilter.form.sevkiyatTown|as_crispy_field}}
+                    </div>
+                    <div class="form-check form-check-inline">
+                      {{myFilter.form.sevkiyatDurumu|as_crispy_field}}
+                    </div>
+                    <div class="form-check form-check-inline">
+                      {{myFilter.form.yolHaritasiAdi|as_crispy_field}}
+                    </div>
+                    <div class="form-check form-check-inline">
+                      {{myFilter.form.fabrikaKodu|as_crispy_field}}
+                    </div>
+                    <div class="form-check form-check-inline">
+                      {{myFilter.form.makbuzNo|as_crispy_field}}
+                    </div>
+                  
+                    
+                  
+                    <button class="btn btn-success">Filtrele</button>
+                  </form> 
+                
+
+              </nav>
+            
+              {% if request.get_full_path == "/" %}
+              <div class="alert alert-success" style="margin-top: 50px;"><strong class="d-flex justify-content-center">Filtreden değer seçiniz...</strong>
+                </div>
+            {% else %}
+               
+                <table id="example1" class="table table-bordered table-striped" style="margin-top: 20px;">
+                    <thead>
+                    <tr>
+                      <th class="d-none">id</th>
+                      <th >Durumu</th>
+                      
+                     <!-- <th>Fiş No</th>-->
+                      <th>Fabrika</th>
+                      <th>Sipariş Tarihi</th>
+                      <th>Sevkiyat Tarihi</th>
+                      <th>Cari Kodu</th>
+                      <th>Cari Adı</th>
+                      <th>Sipariş Cinsi</th>                   
+                      <th>Sipariş Miktarı</th>
+                      <th>Verilen Miktar</th>
+                      <th>Sipariş Notu</th>
+                      <th>Saha Müdürü</th>
+                      <th>Döküman İzleme No</th>
+                      <th>Şehir</th>
+                      <th>İlçe</th>
+                      <th>Adres</th>
+                      <th>Tel No</th>
+                      <th class="d-print-none">İşlem</th>
+                      <th class="d-print-none">İşlem</th>
+                      
+                    </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                    {% for siparis in sipariss %}
+
+                    <td class="d-none">{{siparis.id}}</td>
+                    {% if siparis.sevkiyatDurumu == 'Sevkiyatta' %}
+                        <td style="background-color: khaki;">{{siparis.sevkiyatDurumu}}<br><a>({{siparis.yolHaritasiAdi}})</a></td>
+                    {% elif siparis.sevkiyatDurumu == 'Siparişte' %}
+                        <td style="background-color: lightcoral;">{{siparis.sevkiyatDurumu}}</td>
+                    {% elif siparis.sevkiyatDurumu == 'Öneride' %}
+                    <td style="background-color: rgb(92, 185, 106);">{{siparis.sevkiyatDurumu}}</td>
+                    {% elif siparis.sevkiyatDurumu == 'Silinmiş kayıt' %}
+                    <td style="background-color: rgb(161, 161, 161);">{{siparis.sevkiyatDurumu}}</td>
+                    {% elif siparis.sevkiyatDurumu == 'Tamamlandı' %}
+                    <td style="background-color: rgb(137, 154, 238);">{{siparis.sevkiyatDurumu}}<br>No:{{siparis.makbuzNo}}<br><a>({{siparis.yolHaritasiAdi}})</a></td>
+                    {% else %}
+                      <td>{{siparis.sevkiyatDurumu|default_if_none:""}}</td>    
+                    
+                    {% endif %}    
+                    
+                    <!--<td>{{siparis.siparisFisNo}}</td> -->
+                    <td>{{siparis.fabrikaKodu}}</td>
+                    <td>{{siparis.siparisDateTime}}</td>
+                    <td>{{siparis.makbuzTarihi}}</td>
+                    <td>{{siparis.cariKodu}}</td>
+                    <td>{{siparis.cariAdi}}</td>
+                    <td>{{siparis.siparisCinsi}}</td>
+                    <td>{{siparis.siparisMiktari}}</td>
+                    <td>{{siparis.verilenMiktar|default_if_none:""}}</td>
+                    <td>{{siparis.siparisNotu}}</td>
+                    <td>{{siparis.siparisEden|default_if_none:""}}</td>
+                    <td>{{siparis.siparisİzlemeNo|default_if_none:""}}</td>
+                    <td>{{siparis.sevkiyatCity|default_if_none:""}}</td>
+                    <td>{{siparis.sevkiyatTown|default_if_none:""}}</td>
+                    <td>{{siparis.sevkiyatAdresi|default_if_none:""}}</td>
+                    <td style="width: 10%" >{{siparis.tel1|default_if_none:""}}</td>
+                    <td class="d-print-none">
+                      {% if siparis.sevkiyatDurumu == "Siparişte" or siparis.sevkiyatDurumu == "Öneride"  %}
+                      <form action="sevkiyata-gonder/{{siparis.id}}" method="POST" enctype="multipart/form-data">
+                        {%csrf_token%}
+                        <div class="input-group mb-3" >
+                          <select class="custom-select" name="sepetAdi"  id="inputGroupSelect01" >
+                            <option selected></option>  
+                            {% for sepet in sepets %}
+                            <option value="{{sepet.id}}" >{{ sepet.sepetAdi }}</option>
+                            {% endfor %} 
+                          </select>
+                      </div>
+                      <input type="hidden" id="hiddenid" name="hiddenid" value="{{siparis.id}}" >
+                      <button type="submit" id="sevket" class="btn btn-primary btn-sm" onclick="this.disabled=true,this.form.submit();">Sevkiyata Gönder</button>
+                      </form>
+                      
+                      {% elif siparis.sevkiyatDurumu == "Sevkiyatta"%}
+                      <a href="/sevkiyattanCikar/{{siparis.id}}" class="btn btn-danger">Sevkiyattan Çıkar</a>
+                      
+                    
+                      {% else  %}
+                      
+                      
+                      {% endif %}
+                    
+                    
+                  </td>
+                  <td> 
+                  {% if siparis.sevkiyatDurumu == "Öneride" or siparis.sevkiyatDurumu == "Siparişte" %}
+                    <!--  <a href="/kayitSil/{{siparis.id}}" class="btn btn-danger">Sil</a>-->
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#s{{siparis.id}}">
+                      SİL
+                    </button>
+                    <!-- Modal -->
+                    <div class="modal fade" id="s{{siparis.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">SİLME ONAYI</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            Silmek İstediğinizden emin misiniz?
+                          </div>
+                          <div class="modal-footer">
+                            
+                            <a href="/kayitSil/{{siparis.id}}" class="btn btn-danger">Sil</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  {%endif%}</td>
+                </tr>
+                    {% endfor%}
+                  </tbody>
+                
+                </table>
+                {%endif%}
+
+    </div>
+
+    </div>
+  </div>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+
+
+</body>
+</html>
